@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashScreen">
+
+    <fragment
+        android:id="@+id/splashScreen"
+        android:name="com.breens.youtubeclone.views.ui.splash.FragmentSplash"
+        android:label="fragment_splash_screen"
+        tools:layout="@layout/fragment_splash_screen" >
+        <action
+            android:id="@+id/action_splashScreen_to_fragmentHomeScreen"
+            app:destination="@id/fragmentHomeScreen"
+            app:popUpTo="@id/nav_graph"/>
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentHomeScreen"
+        android:name="com.breens.youtubeclone.views.ui.home.FragmentHomeScreen"
+        android:label="FragmentHomeScreen"
+        tools:layout="@layout/fragment_home_screen">
+        <action
+            android:id="@+id/action_fragmentHomeScreen_to_fragmentSearch"
+            app:destination="@id/fragmentSearch"/>
+        <action
+            android:id="@+id/action_fragmentHomeScreen_to_fragmentVideoDetails"
+            app:destination="@id/fragmentVideoDetails"
+            app:popUpTo="@id/fragmentHomeScreen"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentSearch"
+        android:name="com.breens.youtubeclone.ui.home.SearchFragment"
+        android:label="FragmentSearch"
+        tools:layout="@layout/fragment_search"/>
+
+    <fragment
+        android:id="@+id/fragmentVideoDetails"
+        android:name="com.breens.youtubeclone.ui.home.VideoDetailsFragment"
+        android:label="FragmentVideoDetails"
+        tools:layout="@layout/fragment_video_details"/>
+
+</navigation>
