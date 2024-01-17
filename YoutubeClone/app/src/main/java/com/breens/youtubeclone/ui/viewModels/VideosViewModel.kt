@@ -60,23 +60,23 @@ class VideosViewModel @Inject constructor(
         _categories.postValue(handelCategoriesResponse(response))
     }
 
-     fun fetchVideoByCategory(categoryId: String) = viewModelScope.launch {
-         if (categoryId !in loadedDataMap) {
-             _selectedCategoryVideos.postValue(Resource.Loading())
-             val response = repository.getVideosByCategory(categoryId)
-             _selectedCategoryVideos.postValue(handleVideosForCategoryResponse(response))
-             response.body()?.let {
-                 loadedDataMap[categoryId] = it
-             }
-         } else {
-             val videoResponse = loadedDataMap[categoryId]
-             if (videoResponse!=null) {
-               _selectedCategoryVideos.postValue(Resource.Success(videoResponse))
-             } else {
-                 _selectedCategoryVideos.postValue(Resource.Error("Loaded data for category is null"))
-             }
+    fun fetchVideoByCategory(categoryId: String) = viewModelScope.launch {
+        if (categoryId !in loadedDataMap) {
+            _selectedCategoryVideos.postValue(Resource.Loading())
+            val response = repository.getVideosByCategory(categoryId)
+            _selectedCategoryVideos.postValue(handleVideosForCategoryResponse(response))
+            response.body()?.let {
+                loadedDataMap[categoryId] = it
+            }
+        } else {
+            val videoResponse = loadedDataMap[categoryId]
+            if (videoResponse!=null) {
+                _selectedCategoryVideos.postValue(Resource.Success(videoResponse))
+            } else {
+                _selectedCategoryVideos.postValue(Resource.Error("Loaded data for category is null"))
+            }
 
-         }
+        }
 
     }
 
@@ -117,7 +117,7 @@ class VideosViewModel @Inject constructor(
                 Resource.Success(categoriesResponse)
             } ?: Resource.Error("Categories response body is null")
         } else {
-          Resource.Error(response.message())
+            Resource.Error(response.message())
         }
     }
 

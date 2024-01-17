@@ -11,27 +11,31 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.breens.youtubeclone.R
 import com.breens.youtubeclone.data.models.ChannelResponse
+import com.breens.youtubeclone.data.models.CommentResponse
 import com.breens.youtubeclone.data.models.YoutubeResponse
 import com.breens.youtubeclone.databinding.FragmentVideoDetailsBinding
-import com.breens.youtubeclone.ui.viewModels.ChannelsViewModel
+import com.breens.youtubeclone.ui.adapters.PopularVideosAdapter
+import com.breens.youtubeclone.ui.viewModels.CommentsViewModel
 import com.breens.youtubeclone.ui.viewModels.VideosViewModel
+import com.breens.youtubeclone.utils.Format
 import com.breens.youtubeclone.utils.Resource
+import com.breens.youtubeclone.viewModel.ChannelsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
 
 @AndroidEntryPoint
 class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
 
     private var _binding: FragmentVideoDetailsBinding? = null
     private val binding get() = _binding!!
+    private lateinit var popularVideosAdapter: PopularVideosAdapter
     private val videosViewModel: VideosViewModel by viewModels()
     private val channelsViewModel: ChannelsViewModel by viewModels()
+    private val commentsViewModel: CommentsViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,13 +47,14 @@ class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//        setUpRecyclerView()
         val videoId = arguments?.getString("videoId")
         if (videoId != null) {
             Log.d("FragmentVideoDetails", "Received Video ID: $videoId")
             videosViewModel.fetchVideoById(videoId)
+            commentsViewModel.fetchCommentByVideoId(videoId)
             observeDataFromDataApi()
         }
-
 
     }
 
@@ -69,6 +74,21 @@ class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
                 }
             }
         }
+        commentsViewModel.commentInfo.observe(viewLifecycleOwner) { commentResponse ->
+            when (commentResponse) {
+                is Resource.Success -> {
+                    val commentDetails = commentResponse.data
+                    displayCommentThread(commentDetails)
+                }
+                is Resource.Error -> {
+                    val errorMessage = commentResponse.message ?: "Unknown error"
+                    Log.e("VideoDetailsFragment", "Error fetching comment details: $errorMessage")
+                }
+                is Resource.Loading -> {
+                }
+            }
+        }
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -78,13 +98,24 @@ class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
             if (videoItem != null) {
                 val channelId = videoItem.snippet.channelId
                 binding.videoTitle.text = videoItem.snippet.title
-                binding.viewCount.text = viewsCount(videoItem.statistics.viewCount.toInt())
-                binding.publishedTime.text = convertPublish(videoItem.snippet.publishedAt)
-                binding.description.text = videoItem.snippet.tags[0]
+                binding.viewCount.text = Format.viewsCount(videoItem.statistics.viewCount.toInt())
+                binding.publishedTime.text = Format.convertPublish(videoItem.snippet.publishedAt)
+
+                binding.description.text = videoItem.snippet.tags?.get(0) ?: ""
                 val videoEmbedUrl = "https://www.youtube.com/embed/${videoItem.id}"
                 showVideo(videoEmbedUrl)
                 loadChannelDetails(channelId)
             }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun displayCommentThread(commentResponse: CommentResponse?) {
+        commentResponse?.let {
+            val commentItem = commentResponse.items[0]
+            binding.commentItem.channelAuthPicture.load(commentItem.snippet.topLevelComment.snippet.authorProfileImageUrl)
+            binding.commentItem.totalCount.text = commentResponse.items.size.toString()
+            binding.commentItem.textDisplay.text = commentItem.snippet.topLevelComment.snippet.textDisplay
         }
     }
 
@@ -124,63 +155,16 @@ class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
                 binding.channelPicture.load(channelItem.snippet.thumbnails.high.url)
                 Log.e("displayChannelLogo", channelItem.snippet.thumbnails.high.url)
                 binding.nameChannel.text = channelItem.snippet.title
-                binding.subCount.text = subCount(channelItem.statistics.subscriberCount.toInt())
+                binding.subCount.text = Format.subCount(channelItem.statistics.subscriberCount.toInt())
             }
         }
     }
+
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun showVideo(videoUrl: String) {
         binding.videoView.settings.javaScriptEnabled = true
         binding.videoView.loadUrl(videoUrl)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun convertPublish(publishedDay: String): String {
-        val formatPattern = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
-        val publishedAt = LocalDateTime.parse(publishedDay, formatPattern)
-        val currentDate = LocalDateTime.now().withNano(0)
-        val differenceInSeconds = ChronoUnit.SECONDS.between(publishedAt, currentDate)
-        val differenceInDays = ChronoUnit.DAYS.between(publishedAt, currentDate)
-        val differenceInMonths = ChronoUnit.MONTHS.between(publishedAt, currentDate)
-        return formatTimeDifference(differenceInDays, differenceInSeconds, differenceInMonths)
-    }
-
-    private fun formatTimeDifference(differenceInDays: Long, differenceInSeconds: Long, differenceInMonths: Long): String {
-        val hours = differenceInSeconds / 3600
-        return when {
-            differenceInDays >= 2 -> "$differenceInDays days ago"
-            differenceInDays == 1L -> "1 day ago"
-            hours >= 1 -> "$hours hours ago"
-            differenceInMonths == 1L -> "1 month ago"
-            differenceInMonths > 1 -> "$differenceInMonths months ago"
-            else -> "just now"
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun viewsCount(views: Int): String {
-        val billion = 1_000_000_000
-        val million = 1_000_000
-        val thousand = 1_000
-        return when {
-            views >= billion -> "${views / billion} B views"
-            views >= million -> "${views / million} M views"
-            views >= thousand -> "${views / thousand} K views"
-            else -> "$views views"
-        }
-    }
-
-    private fun subCount(views: Int): String {
-        val billion = 1_000_000_000
-        val million = 1_000_000
-        val thousand = 1_000
-        return when {
-            views >= billion -> "${views / billion} B"
-            views >= million -> "${views / million} M"
-            views >= thousand -> "${views / thousand} K"
-            else -> "$views Subs"
-        }
     }
 
     override fun onDestroyView() {

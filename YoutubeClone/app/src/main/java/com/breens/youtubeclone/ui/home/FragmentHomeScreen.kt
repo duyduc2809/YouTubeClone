@@ -19,8 +19,8 @@ import com.breens.youtubeclone.R
 import com.breens.youtubeclone.data.models.Categories
 import com.breens.youtubeclone.databinding.FragmentHomeScreenBinding
 import com.breens.youtubeclone.ui.adapters.PopularVideosAdapter
-import com.breens.youtubeclone.ui.viewModels.ChannelsViewModel
 import com.breens.youtubeclone.ui.viewModels.VideosViewModel
+import com.breens.youtubeclone.viewModel.ChannelsViewModel
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -80,15 +80,12 @@ class FragmentHomeScreen: Fragment(R.layout.fragment_home_screen) {
         window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.white)
     }
 
-    private fun navigateToVideoDetails(videoId: String) {
-        val bundle = bundleOf("videoId" to videoId)
-        findNavController().navigate(R.id.action_fragmentHomeScreen_to_fragmentVideoDetails, bundle)
-    }
+
 
     private fun setUpRecyclerView() {
         popularVideosAdapter = PopularVideosAdapter(object : PopularVideosAdapter.OnItemClickListener{
             override fun onItemClick(videoId: String) {
-              navigateToVideoDetails(videoId)
+                navigateToVideoDetails(videoId)
             }
         }, channelViewModel)
         binding.videosRecyclerview.apply {
@@ -150,6 +147,10 @@ class FragmentHomeScreen: Fragment(R.layout.fragment_home_screen) {
         return chip
     }
 
+    private fun navigateToVideoDetails(videoId: String) {
+        val bundle = bundleOf("videoId" to videoId)
+        findNavController().navigate(R.id.action_fragmentHomeScreen_to_fragmentVideoDetails, bundle)
+    }
     private fun navigateToSearchFragment() {
         val action = FragmentHomeScreenDirections.actionFragmentHomeScreenToFragmentSearch()
         findNavController().navigate(action)

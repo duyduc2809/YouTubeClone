@@ -9,5 +9,5 @@ data class VideosSearch (
     )
 data class SearchID (
     val kind: String,
-    val videoID: String,
+    val videoId: String,
 )

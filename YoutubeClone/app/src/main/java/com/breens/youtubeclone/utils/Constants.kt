@@ -9,11 +9,13 @@ class Constants {
         const val LIST_CATEGORIES = "videoCategories"
         const val SEARCH = "search"
         const val CHANNEL_INFO = "channels"
+        const val COMMENT_THREADS = "commentThreads"
 
         //PART PROPERTIES
         const val SNIPPET = "snippet"
         const val DETAILS = "contentDetails"
         const val STATISTICS = "statistics"
+        const val REPLIES = "replies"
 
         //CHART PROPERTIES
         const val MOST_POPULAR = "mostPopular"

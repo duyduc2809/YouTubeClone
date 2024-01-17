@@ -18,7 +18,7 @@ data class VideoDetails (
     val description: String,
     val thumbnails: Thumbnails,
     val channelTitle: String,
-    val tags: List<String>,
+    val tags: List<String>?,
     val categoryId: Int,
     val liveBroadcastContent: String,
     val defaultLanguage: String,

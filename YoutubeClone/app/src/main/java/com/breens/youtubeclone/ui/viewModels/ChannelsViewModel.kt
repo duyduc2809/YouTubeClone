@@ -1,4 +1,4 @@
-package com.breens.youtubeclone.ui.viewModels
+package com.breens.youtubeclone.viewModel
 
 import android.util.Log
 import androidx.lifecycle.LiveData

@@ -25,16 +25,18 @@
             app:destination="@id/fragmentSearch"/>
         <action
             android:id="@+id/action_fragmentHomeScreen_to_fragmentVideoDetails"
-            app:destination="@id/fragmentVideoDetails"
-            app:popUpTo="@id/fragmentHomeScreen"
-            app:popUpToInclusive="true"/>
+            app:destination="@id/fragmentVideoDetails" />
     </fragment>
 
     <fragment
         android:id="@+id/fragmentSearch"
         android:name="com.breens.youtubeclone.ui.home.SearchFragment"
         android:label="FragmentSearch"
-        tools:layout="@layout/fragment_search"/>
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_fragmentSearch_to_fragmentVideoDetails"
+            app:destination="@id/fragmentVideoDetails" />
+    </fragment>
 
     <fragment
         android:id="@+id/fragmentVideoDetails"

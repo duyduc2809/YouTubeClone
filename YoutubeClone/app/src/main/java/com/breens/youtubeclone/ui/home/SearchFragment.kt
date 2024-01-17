@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -61,7 +62,11 @@ class SearchFragment : Fragment() {
         }
     }
     private fun setupRecyclerView() {
-        searchVideosAdapter = SearchAdapter()
+        searchVideosAdapter = SearchAdapter(object : SearchAdapter.OnItemClickListener{
+            override fun onItemClick(videoId: String) {
+                navigateToVideoDetails(videoId)
+            }
+        })
         binding.searchRecyclerView.adapter = searchVideosAdapter
         binding.searchRecyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
@@ -87,6 +92,10 @@ class SearchFragment : Fragment() {
         binding.backButton.setOnClickListener {
             findNavController().popBackStack(R.id.fragmentHomeScreen, false)
         }
+    }
+    private fun navigateToVideoDetails(videoId: String) {
+        val bundle = bundleOf("videoId" to videoId)
+        findNavController().navigate(R.id.action_fragmentSearch_to_fragmentVideoDetails, bundle)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
