@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.breens.youtubeclone.data.models.VideosSearch
-import com.breens.youtubeclone.data.models.YoutubeVideos
 import com.breens.youtubeclone.databinding.ItemVideoBinding
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter

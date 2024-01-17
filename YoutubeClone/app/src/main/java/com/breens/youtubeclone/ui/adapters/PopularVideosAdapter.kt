@@ -5,20 +5,25 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.navigation.findNavController
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.breens.youtubeclone.data.models.YoutubeVideos
 import com.breens.youtubeclone.databinding.ItemVideoBinding
-import com.breens.youtubeclone.views.ui.home.FragmentHomeScreenDirections
+import com.breens.youtubeclone.ui.viewModels.ChannelsViewModel
+import kotlinx.coroutines.runBlocking
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
-class PopularVideosAdapter(private val onItemClickListener: OnItemClickListener) :
+class PopularVideosAdapter(
+    private val onItemClickListener: OnItemClickListener,
+    private val channelsViewModel: ChannelsViewModel) :
     ListAdapter<YoutubeVideos, PopularVideosAdapter.PopularVideosViewHolder>(differCallBack) {
+
 
     inner class PopularVideosViewHolder(val binding: ItemVideoBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -48,8 +53,12 @@ class PopularVideosAdapter(private val onItemClickListener: OnItemClickListener)
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: PopularVideosViewHolder, position: Int) {
         val video = getItem(position)
+        channelsViewModel.getChannelThumbnailUrl(video.snippet.channelId) { channelLogo ->
+            channelLogo?.let {
+                holder.binding.channelPicture.load(it)
+            }
+        }
         val thumbnailUrl = video.snippet.thumbnails.high.url
-        val channelLogo = video.snippet.thumbnails.high.url
         val videoDuration = convertDuration(video.contentDetails.duration)
         val titleVideo = video.snippet.title
         val channel = video.snippet.channelTitle
@@ -58,7 +67,7 @@ class PopularVideosAdapter(private val onItemClickListener: OnItemClickListener)
 
         holder.binding.apply {
             videoThumbnail.load(thumbnailUrl)
-            channelPicture.load(channelLogo)
+
             durationVideo.text = videoDuration
             videoTitle.text = titleVideo
             channelName.text = channel
@@ -70,6 +79,7 @@ class PopularVideosAdapter(private val onItemClickListener: OnItemClickListener)
             onItemClickListener.onItemClick(video.id)
         }
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun convertPublish(publishedDay: String): String {

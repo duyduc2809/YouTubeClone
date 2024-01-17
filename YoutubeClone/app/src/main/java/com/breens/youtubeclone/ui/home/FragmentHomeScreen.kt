@@ -1,6 +1,5 @@
 package com.breens.youtubeclone.views.ui.home
 
-import com.breens.youtubeclone.ui.home.SharedViewModel
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,7 +19,8 @@ import com.breens.youtubeclone.R
 import com.breens.youtubeclone.data.models.Categories
 import com.breens.youtubeclone.databinding.FragmentHomeScreenBinding
 import com.breens.youtubeclone.ui.adapters.PopularVideosAdapter
-import com.breens.youtubeclone.ui.home.VideosViewModel
+import com.breens.youtubeclone.ui.viewModels.ChannelsViewModel
+import com.breens.youtubeclone.ui.viewModels.VideosViewModel
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,8 +29,8 @@ class FragmentHomeScreen: Fragment(R.layout.fragment_home_screen) {
     private var _binding: FragmentHomeScreenBinding? = null
     private val binding get() = _binding!!
     private lateinit var popularVideosAdapter: PopularVideosAdapter
-    private val sharedViewModel: SharedViewModel by viewModels()
     private val popularVideosViewModel: VideosViewModel by viewModels()
+    private val channelViewModel: ChannelsViewModel by viewModels()
     private var currentCategoryId: Int? = null
 
     override fun onCreateView(
@@ -90,7 +90,7 @@ class FragmentHomeScreen: Fragment(R.layout.fragment_home_screen) {
             override fun onItemClick(videoId: String) {
               navigateToVideoDetails(videoId)
             }
-        })
+        }, channelViewModel)
         binding.videosRecyclerview.apply {
             adapter = popularVideosAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.breens.youtubeclone.R
 import com.breens.youtubeclone.databinding.FragmentSearchBinding
 import com.breens.youtubeclone.ui.adapters.SearchAdapter
+import com.breens.youtubeclone.ui.viewModels.VideosViewModel
 import com.breens.youtubeclone.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
