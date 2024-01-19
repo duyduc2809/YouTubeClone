@@ -169,6 +169,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         app:chipIcon="@drawable/thumb_up"
+                        app:chipIconSize="20dp"
                         android:text="0"
                         android:textStyle="bold" />
                     <com.google.android.material.chip.Chip
@@ -179,6 +180,7 @@
                         app:layout_constraintStart_toEndOf="@id/likeChip"
                         app:layout_constraintTop_toTopOf="@id/likeChip"
                         app:chipIcon="@drawable/share"
+                        app:chipIconSize="20dp"
                         android:text="Share"/>
                     <com.google.android.material.chip.Chip
                         android:id="@+id/remixChip"
@@ -188,6 +190,7 @@
                         app:layout_constraintStart_toEndOf="@id/shareChip"
                         app:layout_constraintTop_toTopOf="@id/shareChip"
                         app:chipIcon="@drawable/shortsicon"
+                        app:chipIconSize="20dp"
                         android:text="Remix"/>
                     <com.google.android.material.chip.Chip
                         android:id="@+id/downloadChip"
@@ -197,6 +200,7 @@
                         app:layout_constraintStart_toEndOf="@id/remixChip"
                         app:layout_constraintTop_toTopOf="@id/remixChip"
                         app:chipIcon="@drawable/download"
+                        app:chipIconSize="20dp"
                         android:text="Download"/>
                     <com.google.android.material.chip.Chip
                         android:id="@+id/cutChip"
@@ -205,6 +209,7 @@
                         app:layout_constraintBottom_toBottomOf="@id/downloadChip"
                         app:layout_constraintStart_toEndOf="@id/downloadChip"
                         app:layout_constraintTop_toTopOf="@id/downloadChip"
+                        app:chipIconSize="20dp"
                         app:chipIcon="@drawable/content_cut"
                         android:text="Cut video"/>
                     <com.google.android.material.chip.Chip
@@ -215,6 +220,7 @@
                         app:layout_constraintStart_toEndOf="@id/cutChip"
                         app:layout_constraintTop_toTopOf="@id/cutChip"
                         app:chipIcon="@drawable/add_to"
+                        app:chipIconSize="20dp"
                         android:text="Save"/>
 
                 </com.google.android.material.chip.ChipGroup>

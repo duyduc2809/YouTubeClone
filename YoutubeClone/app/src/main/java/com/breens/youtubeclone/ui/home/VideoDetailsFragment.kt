@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.breens.youtubeclone.R
 import com.breens.youtubeclone.data.models.ChannelResponse
@@ -32,7 +31,6 @@ class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
 
     private var _binding: FragmentVideoDetailsBinding? = null
     private val binding get() = _binding!!
-    private lateinit var popularVideosAdapter: PopularVideosAdapter
     private val videosViewModel: VideosViewModel by viewModels()
     private val channelsViewModel: ChannelsViewModel by viewModels()
     private val commentsViewModel: CommentsViewModel by viewModels()
@@ -47,7 +45,6 @@ class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        setUpRecyclerView()
         val videoId = arguments?.getString("videoId")
         if (videoId != null) {
             Log.d("FragmentVideoDetails", "Received Video ID: $videoId")
@@ -103,6 +100,7 @@ class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
 
                 binding.description.text = videoItem.snippet.tags?.get(0) ?: ""
                 val videoEmbedUrl = "https://www.youtube.com/embed/${videoItem.id}"
+                binding.commentItem.totalCount.text = videoItem.statistics.commentCount
                 showVideo(videoEmbedUrl)
                 loadChannelDetails(channelId)
             }
@@ -114,7 +112,6 @@ class VideoDetailsFragment : Fragment(R.layout.fragment_video_details) {
         commentResponse?.let {
             val commentItem = commentResponse.items[0]
             binding.commentItem.channelAuthPicture.load(commentItem.snippet.topLevelComment.snippet.authorProfileImageUrl)
-            binding.commentItem.totalCount.text = commentResponse.items.size.toString()
             binding.commentItem.textDisplay.text = commentItem.snippet.topLevelComment.snippet.textDisplay
         }
     }

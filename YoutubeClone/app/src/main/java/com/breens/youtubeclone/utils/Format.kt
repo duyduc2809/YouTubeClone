@@ -67,9 +67,9 @@ class Format {
             val million = 1_000_000
             val thousand = 1_000
             return when {
-                views >= billion -> "${views / billion} B"
-                views >= million -> "${views / million} M"
-                views >= thousand -> "${views / thousand} K"
+                views >= billion -> "${views / billion} B subs"
+                views >= million -> "${views / million} M subs"
+                views >= thousand -> "${views / thousand} K subs"
                 else -> "$views Subs"
             }
         }

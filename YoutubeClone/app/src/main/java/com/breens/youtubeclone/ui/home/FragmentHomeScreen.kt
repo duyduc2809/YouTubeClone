@@ -1,4 +1,4 @@
-package com.breens.youtubeclone.views.ui.home
+package com.breens.youtubeclone.ui.home
 
 import android.os.Build
 import android.os.Bundle
@@ -83,11 +83,18 @@ class FragmentHomeScreen: Fragment(R.layout.fragment_home_screen) {
 
 
     private fun setUpRecyclerView() {
-        popularVideosAdapter = PopularVideosAdapter(object : PopularVideosAdapter.OnItemClickListener{
-            override fun onItemClick(videoId: String) {
-                navigateToVideoDetails(videoId)
-            }
-        }, channelViewModel)
+        popularVideosAdapter = PopularVideosAdapter(
+            object : PopularVideosAdapter.OnItemClickListener{
+                override fun onItemClick(videoId: String) {
+                    navigateToVideoDetails(videoId)
+                }
+            },
+            object : PopularVideosAdapter.OnChannelLogoClickListener {
+                override fun onChannelLogoClick(channelId: String) {
+                    navigateToChannelDetails(channelId)
+                }
+            },
+            channelViewModel)
         binding.videosRecyclerview.apply {
             adapter = popularVideosAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -151,8 +158,15 @@ class FragmentHomeScreen: Fragment(R.layout.fragment_home_screen) {
         val bundle = bundleOf("videoId" to videoId)
         findNavController().navigate(R.id.action_fragmentHomeScreen_to_fragmentVideoDetails, bundle)
     }
+
+    private fun navigateToChannelDetails(channelId: String) {
+        val bundle = bundleOf("channelId" to channelId)
+        findNavController().navigate(R.id.action_fragmentHomeScreen_to_fragmentChannelDetails, bundle)
+    }
+
     private fun navigateToSearchFragment() {
-        val action = FragmentHomeScreenDirections.actionFragmentHomeScreenToFragmentSearch()
+        val action =
+            FragmentHomeScreenDirections.actionFragmentHomeScreenToFragmentSearch()
         findNavController().navigate(action)
     }
     override fun onDestroyView() {

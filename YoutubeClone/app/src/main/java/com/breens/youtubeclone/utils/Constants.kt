@@ -16,6 +16,7 @@ class Constants {
         const val DETAILS = "contentDetails"
         const val STATISTICS = "statistics"
         const val REPLIES = "replies"
+        const val BRANDING_SETTING = "brandingSettings"
 
         //CHART PROPERTIES
         const val MOST_POPULAR = "mostPopular"

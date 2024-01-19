@@ -8,6 +8,7 @@ data class Channels (
     val id: String,
     val snippet: ChannelDetails,
     val contentDetails: ChannelContentDetails,
+    val brandingSettings: Brands,
     val statistics: ChannelStats
 )
 
@@ -31,6 +32,23 @@ data class RelatedPlaylist (
     val uploads: String
 )
 
+data class Brands (
+    val channel: BrandDetails,
+    val image: Banner
+)
+
+data class BrandDetails (
+    val title: String,
+    val description: String,
+    val keywords: String,
+    val trackingAnalyticsAccountId: String,
+    val unsubscribedTrailer: String,
+    val country: String
+)
+
+data class Banner (
+    val bannerExternalUrl: String
+)
 data class ChannelStats (
     val viewCount: String,
     val subscriberCount: String,

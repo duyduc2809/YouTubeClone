@@ -6,6 +6,7 @@ import com.breens.youtubeclone.data.models.Channels
 import com.breens.youtubeclone.data.models.CommentResponse
 import com.breens.youtubeclone.data.models.SearchResponse
 import com.breens.youtubeclone.data.models.YoutubeResponse
+import com.breens.youtubeclone.utils.Constants.Companion.BRANDING_SETTING
 import com.breens.youtubeclone.utils.Constants.Companion.CHANNEL_INFO
 import com.breens.youtubeclone.utils.Constants.Companion.COMMENT_THREADS
 import com.breens.youtubeclone.utils.Constants.Companion.DETAILS
@@ -68,7 +69,7 @@ interface YoutubeApi {
 
     @GET(CHANNEL_INFO)
     suspend fun fetchChannelById(
-        @Query("part") part: String = "$SNIPPET, $DETAILS, $STATISTICS",
+        @Query("part") part: String = "$SNIPPET, $DETAILS, $STATISTICS, $BRANDING_SETTING",
         @Query("id") id: String,
         @Query("key") key: String = KEY
     ): Response<ChannelResponse>

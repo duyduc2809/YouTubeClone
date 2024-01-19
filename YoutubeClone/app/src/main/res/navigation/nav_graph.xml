@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragmentHomeScreen"
-        android:name="com.breens.youtubeclone.views.ui.home.FragmentHomeScreen"
+        android:name="com.breens.youtubeclone.ui.home.FragmentHomeScreen"
         android:label="FragmentHomeScreen"
         tools:layout="@layout/fragment_home_screen">
         <action
@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_fragmentHomeScreen_to_fragmentVideoDetails"
             app:destination="@id/fragmentVideoDetails" />
+        <action
+            android:id="@+id/action_fragmentHomeScreen_to_fragmentChannelDetails"
+            app:destination="@id/fragmentChannelDetails" />
     </fragment>
 
     <fragment
@@ -36,12 +39,25 @@
         <action
             android:id="@+id/action_fragmentSearch_to_fragmentVideoDetails"
             app:destination="@id/fragmentVideoDetails" />
+        <action
+            android:id="@+id/action_fragmentSearch_to_fragmentChannelDetails"
+            app:destination="@id/fragmentChannelDetails" />
     </fragment>
 
     <fragment
         android:id="@+id/fragmentVideoDetails"
         android:name="com.breens.youtubeclone.ui.home.VideoDetailsFragment"
         android:label="FragmentVideoDetails"
-        tools:layout="@layout/fragment_video_details"/>
+        tools:layout="@layout/fragment_video_details">
+        <action
+            android:id="@+id/action_fragmentVideoDetails_to_fragmentChannelDetails"
+            app:destination="@id/fragmentChannelDetails" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentChannelDetails"
+        android:name="com.breens.youtubeclone.ui.channel.ChannelDetailFragment"
+        android:label="FragmentChannelDetails"
+        tools:layout="@layout/fragment_channel_detail"/>
 
 </navigation>

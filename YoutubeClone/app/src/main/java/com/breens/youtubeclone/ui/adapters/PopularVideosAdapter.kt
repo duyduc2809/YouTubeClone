@@ -1,11 +1,9 @@
 package com.breens.youtubeclone.ui.adapters
 
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -14,23 +12,23 @@ import com.breens.youtubeclone.data.models.YoutubeVideos
 import com.breens.youtubeclone.databinding.ItemVideoBinding
 import com.breens.youtubeclone.utils.Format
 import com.breens.youtubeclone.viewModel.ChannelsViewModel
-import com.breens.youtubeclone.views.ui.home.FragmentHomeScreenDirections
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
 
 class PopularVideosAdapter(
     private val onItemClickListener: OnItemClickListener,
+    private val onChannelLogoClickListener: OnChannelLogoClickListener,
     private val channelsViewModel: ChannelsViewModel
 ) :
     ListAdapter<YoutubeVideos, PopularVideosAdapter.PopularVideosViewHolder>(differCallBack) {
-
 
     inner class PopularVideosViewHolder(val binding: ItemVideoBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     interface OnItemClickListener {
         fun onItemClick(videoId: String)
+    }
+
+    interface OnChannelLogoClickListener {
+        fun onChannelLogoClick(channelId: String)
     }
 
     companion object {
@@ -78,6 +76,10 @@ class PopularVideosAdapter(
 
         holder.itemView.setOnClickListener {
             onItemClickListener.onItemClick(video.id)
+        }
+
+        holder.binding.channelPicture.setOnClickListener {
+            onChannelLogoClickListener.onChannelLogoClick(video.snippet.channelId)
         }
     }
 }

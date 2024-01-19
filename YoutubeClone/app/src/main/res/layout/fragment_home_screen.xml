@@ -15,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:elevation="0dp"
+            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -30,16 +31,15 @@
                     android:layout_height="90dp"
                     android:background="@color/white"
                     android:minHeight="?attr/actionBarSize"
-                    android:theme="?attr/actionBarTheme"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/imageView2"
-                    android:layout_width="70dp"
-                    android:layout_height="30dp"
+                    android:layout_width="75dp"
+                    android:layout_height="35dp"
                     android:src="@drawable/youtube_logo"
                     android:layout_marginTop="5dp"
                     android:layout_marginStart="8dp"
@@ -49,18 +49,19 @@
 
                 <ImageView
                     android:id="@+id/imageSearchButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/search"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="8dp"
+                    android:src="@drawable/search"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/imageNotification"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_marginEnd="16dp"
                     android:src="@drawable/notifications"
                     app:layout_constraintBottom_toBottomOf="@id/imageSearchButton"
@@ -69,8 +70,8 @@
 
                 <ImageView
                     android:id="@+id/imageView6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_marginEnd="16dp"
                     android:src="@drawable/cast"
                     app:layout_constraintBottom_toBottomOf="@id/imageNotification"
@@ -79,9 +80,10 @@
                 <androidx.core.widget.NestedScrollView
                     android:id="@+id/nestedScrollView"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="match_parent"
                     android:scrollbars="none"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/imageView2">
 
                     <HorizontalScrollView
@@ -102,7 +104,7 @@
                                 android:layout_marginTop="5dp"
                                 android:text="Explore"
                                 android:textStyle="bold"
-                                app:chipCornerRadius="4dp"
+                                app:chipCornerRadius="5dp"
                                 app:chipIcon="@drawable/explore"
                                 android:layout_marginStart="8dp"
                                 app:layout_constraintStart_toStartOf="parent"
